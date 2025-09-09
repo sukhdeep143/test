@@ -13,6 +13,9 @@ export default function Register() {
             ...form,
             [e.target.name]: e.target.value,
         })
+
+
+        
     }
     const HandelSubmit = async (e) => {
         e.preventDefault()
