@@ -8,64 +8,73 @@ export default function Register() {
         password: ""
     });
     const [message, setMessage] = useState("");
+
     const handleChange = (e) => {
         setForm({
             ...form,
             [e.target.name]: e.target.value,
         })
-
-
-        
     }
-    const HandelSubmit = async (e) => {
+
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        setMessage("processing...")
+        setMessage("Processing...")
+
         try {
-            const res = await fetch("url", {
+            const res = await fetch("http://localhost:5000/register", {
                 method: "POST",
-                headers: { "content-Type": "application" },
-                body: JSON.stringify(from)
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(form), // ✅ fixed typo
             });
+
             const data = await res.json();
-            setMessage(data.message)
+            setMessage(data.message || "Registration successful!");
         } catch (error) {
-            console.log(error, setMessage("This is the problome..."))
+            console.error(error);
+            setMessage("Something went wrong...");
         }
     }
+
     return (
-        <div>
+        <div className="bg-black h-screen text-white justify-center items-center flex">
             <form
-                onSubmit={HandelSubmit}
+                className="flex flex-1 flex-col justify-center items-center gap-5"
+                onSubmit={handleSubmit}
             >
-                <input type="text"
+                <input
+                    type="text"
                     name="name"
                     placeholder="Full name"
                     value={form.name}
                     onChange={handleChange}
                     required
+                    className="rounded-2xl border-2 p-4"
                 />
-                <input type="email"
+                <input
+                    type="email"
                     name="email"
                     placeholder="Enter email"
                     value={form.email}
                     onChange={handleChange}
-                    required 
+                    required
+                    className="rounded-2xl border-2 p-4"
                 />
-
-                <input type="password"
+                <input
+                    type="password"
                     name="password"
-                    placeholder="Enter pssword"
+                    placeholder="Enter password"
                     value={form.password}
                     onChange={handleChange}
                     required
+                    className="rounded-2xl border-2 p-4"
                 />
-
-                <button type="submit">
-                    submit
+                <button
+                    type="submit"
+                    className="rounded-2xl border-2 p-4"
+                >
+                    Submit
                 </button>
-                {message && (
-                    <p>{message}</p>
-                )}
+                {message && <p>{message}</p>}
             </form>
         </div>
     )
