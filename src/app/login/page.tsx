@@ -7,7 +7,15 @@ export default function LoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
 
-  const handleLogin = async () => {
+  const handleChange= (e)=>{
+    setForm({
+      ...form,
+      [e.target.name] : e.target.value
+    })
+ 
+  }
+  const handleLogin = async (e) => {
+    e.priventDefault()
     try {
       const res = await fetch("http://localhost:5000/login", {
         method: "POST",
@@ -36,14 +44,14 @@ export default function LoginPage() {
         type="email"
         placeholder="Email"
         value={form.email}
-        onChange={(e) => setForm({ ...form, email: e.target.value })}
+        onChange={handleChange}
         className="border p-2 mb-2"
       />
       <input
         type="password"
         placeholder="Password"
         value={form.password}
-        onChange={(e) => setForm({ ...form, password: e.target.value })}
+        onChange={handleChange}
         className="border p-2 mb-2"
       />
       <button
